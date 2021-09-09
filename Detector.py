@@ -1,15 +1,11 @@
 import glob
 import os
 import shutil
-from tkinter import *  # __all__ 에 저장된 모듈 임포트됨
+import tkinter.font
+from tkinter import *  # __all__ 에 저장된 모듈 import
 import tkinter.ttk as ttk
-from tkinter import filedialog  # 파일 불로오는 기능 (서브 모듈이라 *로 안불러와짐)
+from tkinter import filedialog  # 파일 불러오는 기능
 import tkinter.messagebox as msgbox  # 메세지 박스 사용시 불러옴
-from PIL import ImageTk, Image # image 설정
-import tkinter.font # font 설정
-from PIL import Image  # 이미지 관련 모듈
-from threading import Thread
-from multiprocessing import Process
 from enlighten_inference import EnlightenOnnxModel
 import cv2
 import time
@@ -39,7 +35,6 @@ def add_file():  # 복수개의 파일 선택
         list_file.insert(END, file)  # 리스트 파일 프레임에 추가
         image_list.append(file)
         count += 1
-    print(count)
 
 
 # 선택 파일 목록에서 삭제
@@ -52,7 +47,6 @@ def del_file():
             count -= 1
         list_file.delete(index)
         del image_list[index]
-    print(count)
 
     return image_list
 
@@ -64,7 +58,7 @@ def del_all_file():
 
     count = 0
     image_list = []
-    # for index in list_file:  # reversed : 거꾸로 반환해줌 (인덱스의 경우 뒤에서부터 재껴야됨)
+    # for index in list_file:  # reversed : 거꾸로 반환해줌 (인덱스의 경우 뒤에서부터)
     #     list_file.delete(index)
 
 
@@ -123,9 +117,7 @@ def LLE():
         for i in range(count):
             file_name = list_file.get(str(i))
             origin_name = file_name.split("/")[-1]
-            # print(file_name)
 
-            # images = cv2.imread(str(file_name))
             img_array = np.fromfile(file_name, np.uint8)
             images = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
 
@@ -133,7 +125,6 @@ def LLE():
 
             file_name = origin_name
             dest_path = os.path.join(txt_dest_path.get(), curr_time, file_name)  # 저장경로 설정
-            # print(dest_path)
 
             result, encoded_img = cv2.imencode(".jpg", processed)
             if result:
@@ -144,9 +135,6 @@ def LLE():
         if askopendir:
             # 이미지 미리보기
             os.startfile(txt_dest_path.get()+"/"+curr_time)
-            # cv2.imshow('result', processed)
-            # cv2.waitKey()
-            # cv2.destroyAllWindows()
 
     except Exception as err:  # 예외처리
         msgbox.showerror("에러", err)
@@ -238,7 +226,6 @@ def logging():
                 detected_frame = []
                 for literal in range(len(object_frame_count)):
                     detected_frame.append(int(object_frame_count[literal].split("\\")[-1][len(file_name)+1:-4]))
-                    # print(detected_frame.append(int(object_frame_count[literal].split("\\")[1][len(file_name) + 1:-4])), "done")
                     # 파일명 저장 규칙이 확장자 없는 파일명이므로 .txt인 -4까지는 출력 안함.
                 detected_frame = sorted(detected_frame)  # 오름차순 정렬
                 second = []
@@ -303,49 +290,13 @@ def RTdetectStart():
                               project=txt_dest_path.get(),
                               name=name,
                               exist_ok=False,
-                              line_thickness=2,
+                              line_thickness=1,
                               hide_labels=False,
                               hide_conf=True,
                               half=False)
-            '''
-            file_position = image_list[media]
-            log_path = os.path.join(txt_dest_path.get(), name) + '\log\*.txt'
-            if file_position.split(".")[-1] == "mp4" or "avi":
-                video = cv2.VideoCapture(image_list[media])
-                file_name = file_position.split("/")[-1].split(".")[0]  # 파일명(확장자 제외) 추출
-                fps = video.get(cv2.CAP_PROP_FPS)
-                total_frame = video.get(cv2.CAP_PROP_FRAME_COUNT)
-                video_length = total_frame/fps
-                object_frame_count = glob.glob(log_path)
-                detected_frame = []
-                for literal in range(len(object_frame_count)):
-                    detected_frame.append(int(object_frame_count[literal].split("\\")[-1][len(file_name)+1:-4]))
-                    # print(detected_frame.append(int(object_frame_count[literal].split("\\")[1][len(file_name) + 1:-4])), "done")
-                    # 파일명 저장 규칙이 확장자 없는 파일명이므로 .txt인 -4까지는 출력 안함.
-                detected_frame = sorted(detected_frame)  # 오름차순 정렬
-                second = []
-                print("총", video_length, "초의 비디오에서 약", round(len(object_frame_count) / fps, 1),
-                      "초 동안 탐지되었으며 구간은 다음과 같습니다")
-                for i in range(len(detected_frame) - 1):
-                    if int(detected_frame[i] / fps) == int(detected_frame[i + 1] / fps):
-                        continue
-                    second.append((int(detected_frame[i] / fps)))
-                print(second, "초")
-                f = open(txt_dest_path.get()+"/"+name+"/"+file_name+"_log.txt", "w")
-                f.write("탐지된 구간(초): %s" % second)
-                f.close()
-                shutil.rmtree(txt_dest_path.get()+"/"+name+"/log")
-            '''
 
         except Exception as err:
             msgbox.showerror("알림", "실시간 탐지에 실패했습니다.\n에러내용: %s" % err)
-
-
-def RTdetectEnd():
-    pass
-
-def emptyrt():
-    pass
 
 
 # 저조도 개선
@@ -402,54 +353,32 @@ def start_logging():
     logging()
 
 
-# th1 = Process(target=RTdetectStart)
 if __name__ == '__main__':
 
     font1 = tkinter.font.Font(family="맑은 고딕", size=12, weight='bold')
-    # 실시간 탐지 프레임
-    rt_edge = LabelFrame(root, text="CCTV 화면",font=font1)
-    rt_edge['bg'] = '#04407b'
-    rt_edge['fg'] = 'white'
-    rt_edge.pack(fill="x", padx=5, pady=1, side="left")
-
-    # btn_rtstart_file = Label(realtime_frame, image=None, padx=5, pady=5, width=50, height=20, text="실시간 탐지를 사용하고 있지 않습니다",)
-    rt_video_frame = Frame(rt_edge, bg='black', width=533, height=400, relief='solid', bd=1)
-    rt_video_frame.pack(side="top", padx=5, pady=10, ipady=4)
-
-    # rt_text = Label(rt_edge, text="실시간 탐지를 사용하고 있지 않습니다.")
-    # rt_text.pack(side='top')
-
-    btn_rtstart = Button(rt_edge, padx=5, pady=5, width=12, text="실시간탐지시작", command=RTdetectStart,font=font1)
-    btn_rtstart['bg'] = '#00ffff'
-    btn_rtstart['fg'] = 'black'
-    btn_rtstart.pack(side="left", padx=5, pady=15, ipady=4, ipadx=18)
-
-    # btn_rtend = Button(rt_edge, padx=5, pady=5, width=12, text="실시간탐지종료", command=RTdetectEnd)
-    # btn_rtend.pack(side="right", padx=5, pady=15, ipady=4, ipadx=18)
 
     # 파일 프레임 (파일 추가, 선택 삭제, 선택 확인)
-
     file_frame = Frame(root)
     file_frame.pack(fill="x", padx=5, pady=5)
 
     btn_add_file = Button(file_frame, padx=5, pady=5, width=12, text="파일추가", command=add_file,font=font1)
-    btn_add_file['bg'] = '#489cf9'
-    btn_add_file['fg'] = 'white'
+    btn_add_file['bg'] = 'white'
+    btn_add_file['fg'] = 'black'
     btn_add_file.pack(side="left", padx=5)
 
     btn_del_file = Button(file_frame, padx=5, pady=5, width=12, text="파일삭제", command=del_file,font=font1)
     btn_del_file['bg'] = '#489cf9'
-    btn_del_file['fg'] = 'white'
+    btn_del_file['fg'] = 'black'
     btn_del_file.pack(side="left", padx=5)
 
     btn_delall_file = Button(file_frame, padx=5, pady=5, width=12, text="전체삭제", command=del_all_file,font=font1)
     btn_delall_file['bg'] = '#489cf9'
-    btn_delall_file['fg'] = 'white'
+    btn_delall_file['fg'] = 'black'
     btn_delall_file.pack(side="left", padx=5)
 
     btn_show_file = Button(file_frame, padx=5, pady=5, width=12, text="영상확인", command=show_file,font=font1)
     btn_show_file['bg'] = '#489cf9'
-    btn_show_file['fg'] = 'white'
+    btn_show_file['fg'] = 'black'
     btn_show_file.pack(side="right", padx=5)
 
     # 리스트 프레임
@@ -482,7 +411,6 @@ if __name__ == '__main__':
         cmb_format = ttk.Combobox(path_frame, state="readonly", values=opt_format, width=5)
         cmb_format.current(0)
 
-
     cmb_format.pack(side="right", padx=5, pady=5)
 
     # 파일 포맷 옵션
@@ -499,31 +427,28 @@ if __name__ == '__main__':
 
     btn_close = Button(frame_run, padx=5, pady=5, text="프로그램종료", width=12, command=root.quit,font=font1)
     btn_close['bg'] = '#ff0080'
-    btn_close['fg'] = 'white'
+    btn_close['fg'] = 'black'
     btn_close.pack(side="right", padx=5, pady=5)
 
     btn_LLE = Button(frame_run, padx=5, pady=5, text="저조도개선", width=12, command=start_LLE,font=font1)
     btn_LLE['bg'] = '#489cf9'
-    btn_LLE['fg'] = 'white'
+    btn_LLE['fg'] = 'black'
     btn_LLE.pack(side="left", padx=5, pady=5)
 
     btn_OD = Button(frame_run, padx=5, pady=5, text="객체탐지", width=12, command=start_obj_detect,font=font1)
     btn_OD['bg'] = '#489cf9'
-    btn_OD['fg'] = 'white'
+    btn_OD['fg'] = 'black'
     btn_OD.pack(side="left", padx=5, pady=5)
 
     btn_log = Button(frame_run, padx=5, pady=5, text="로그기록", width=12, command=start_logging,font=font1)
     btn_log['bg'] = '#489cf9'
-    btn_log['fg'] = 'white'
+    btn_log['fg'] = 'black'
     btn_log.pack(side="left", padx=5, pady=5)
 
-
-    # 진행도 추가됐음 해서 추가해봄.. 지워도 OK
-    # frame_progress = LabelFrame(root, text="진행도")
-    # frame_progress.pack(fill="x", padx=5, pady=5)
-    # progressbar = ttk.Progressbar(frame_progress, maximum=100, value=0, variable=1, mode="determinate")
-    # progressbar.pack(fill="x", padx=5, pady=5)
-
+    btn_rtstart = Button(frame_run, padx=5, pady=5, width=12, text="실시간탐지시작", command=RTdetectStart,font=font1)
+    btn_rtstart['bg'] = '#00ffff'
+    btn_rtstart['fg'] = 'black'
+    btn_rtstart.pack(side="left", padx=5, pady=5)
 
     root.resizable(False, False)  # x(너비), y(높이) 값 변경 불가 (창 크기 변경 불가)
     root.mainloop()  # 창이 닫히지 않도록 해줌
