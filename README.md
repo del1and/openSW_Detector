@@ -17,14 +17,19 @@
 - 사용 언어 : Python 3.7
 
 ### 구동 환경
-- OS : Window
+- OS : Windows 10 Pro Build 19043.1165
+- CPU: i7-11700K
+- RAM: 32GB DDR4
+- GPU: GeForce RTX 3080
 
 ### 3. 시스템 구성 및 아키텍처
 
 - 저조도 모델 : EnlightenGan(17 Jun 2019  ·  Yifan Jiang, Xinyu Gong, Ding Liu, Yu Cheng, Chen Fang, Xiaohui Shen, Jianchao Yang, Pan Zhou, Zhangyang Wang )
 - https://arxiv.org/pdf/1906.06972v2.pdf
+- https://github.com/arsenyinfo/EnlightenGAN-inference
 
 - 객체 탐지 모델 : Yolov5
+- https://github.com/ultralytics/yolov5
 
 ### 4. 모델 학습 결과
 epoch 50
