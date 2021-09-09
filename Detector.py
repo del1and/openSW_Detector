@@ -122,15 +122,21 @@ def LLE():
             file_name = list_file.get(str(i))
             origin_name = file_name.split("/")[-1]
             # print(file_name)
-            print(file_name)
-            images = cv2.imread(str(file_name))
+
+            # images = cv2.imread(str(file_name))
+            img_array = np.fromfile(file_name, np.uint8)
+            images = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
+
             processed = model.predict(images)
 
             file_name = origin_name
             dest_path = os.path.join(txt_dest_path.get(), curr_time, file_name)  # 저장경로 설정
             # print(dest_path)
 
-            cv2.imwrite(dest_path, processed)
+            result, encoded_img = cv2.imencode(".jpg", processed)
+            if result:
+                with open(dest_path, mode='w+b') as f:
+                    encoded_img.tofile(f)
 
         askopendir = msgbox.askokcancel("알림", "조도개선이 완료되었습니다. 폴더를 열어보시겠습니까?")
         if askopendir:
@@ -154,7 +160,7 @@ def obj_detect():
 
     try:
         for media in range(len(image_list)):
-            detect_custom.run(weights='./best.pt',
+            detect_custom.run(weights='./gray_weights.pt',
                               source=image_list[media],
                               imgsz=640,
                               conf_thres=0.2,
@@ -194,7 +200,7 @@ def logging():
     name = 'LOG_'+curr_time
     try:
         for media in range(len(image_list)):
-            detect_custom.run(weights='./best.pt',
+            detect_custom.run(weights='./gray_weights.pt',
                               source=image_list[media],
                               imgsz=640,
                               conf_thres=0.2,
@@ -275,7 +281,7 @@ def RTdetectStart():
         elif video2[0]:
             source = '2'
         try:
-            detect_custom.run(weights='./best.pt',
+            detect_custom.run(weights='./gray_weights.pt',
                               source=source,
                               imgsz=640,
                               conf_thres=0.25,
