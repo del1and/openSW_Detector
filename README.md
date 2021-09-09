@@ -26,7 +26,7 @@ Training 환경
 
 4. 모델 학습 결과
 epoch 50
-<img src="./images/results.png" width="400" height="200" >
+![training_results](https://user-images.githubusercontent.com/41338783/132691322-6089e5c8-5598-42ad-ab41-bfa400894b2b.png)
 
 5. 프로젝트 주요기능
 - 저조도 개선 : 저조도 영상을 입력으로 받아 밝기 개선
