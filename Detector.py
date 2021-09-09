@@ -5,6 +5,8 @@ from tkinter import *  # __all__ 에 저장된 모듈 임포트됨
 import tkinter.ttk as ttk
 from tkinter import filedialog  # 파일 불로오는 기능 (서브 모듈이라 *로 안불러와짐)
 import tkinter.messagebox as msgbox  # 메세지 박스 사용시 불러옴
+from PIL import ImageTk, Image # image 설정
+import tkinter.font # font 설정
 from PIL import Image  # 이미지 관련 모듈
 from threading import Thread
 from multiprocessing import Process
@@ -301,7 +303,7 @@ def RTdetectStart():
                               project=txt_dest_path.get(),
                               name=name,
                               exist_ok=False,
-                              line_thickness=1,
+                              line_thickness=2,
                               hide_labels=False,
                               hide_conf=True,
                               half=False)
@@ -403,8 +405,11 @@ def start_logging():
 # th1 = Process(target=RTdetectStart)
 if __name__ == '__main__':
 
+    font1 = tkinter.font.Font(family="맑은 고딕", size=12, weight='bold')
     # 실시간 탐지 프레임
-    rt_edge = LabelFrame(root, text="CCTV 화면")
+    rt_edge = LabelFrame(root, text="CCTV 화면",font=font1)
+    rt_edge['bg'] = '#04407b'
+    rt_edge['fg'] = 'white'
     rt_edge.pack(fill="x", padx=5, pady=1, side="left")
 
     # btn_rtstart_file = Label(realtime_frame, image=None, padx=5, pady=5, width=50, height=20, text="실시간 탐지를 사용하고 있지 않습니다",)
@@ -414,7 +419,9 @@ if __name__ == '__main__':
     # rt_text = Label(rt_edge, text="실시간 탐지를 사용하고 있지 않습니다.")
     # rt_text.pack(side='top')
 
-    btn_rtstart = Button(rt_edge, padx=5, pady=5, width=12, text="실시간탐지시작", command=RTdetectStart)
+    btn_rtstart = Button(rt_edge, padx=5, pady=5, width=12, text="실시간탐지시작", command=RTdetectStart,font=font1)
+    btn_rtstart['bg'] = '#00ffff'
+    btn_rtstart['fg'] = 'black'
     btn_rtstart.pack(side="left", padx=5, pady=15, ipady=4, ipadx=18)
 
     # btn_rtend = Button(rt_edge, padx=5, pady=5, width=12, text="실시간탐지종료", command=RTdetectEnd)
@@ -425,16 +432,24 @@ if __name__ == '__main__':
     file_frame = Frame(root)
     file_frame.pack(fill="x", padx=5, pady=5)
 
-    btn_add_file = Button(file_frame, padx=5, pady=5, width=12, text="파일추가", command=add_file)
+    btn_add_file = Button(file_frame, padx=5, pady=5, width=12, text="파일추가", command=add_file,font=font1)
+    btn_add_file['bg'] = '#489cf9'
+    btn_add_file['fg'] = 'white'
     btn_add_file.pack(side="left", padx=5)
 
-    btn_del_file = Button(file_frame, padx=5, pady=5, width=12, text="파일삭제", command=del_file)
+    btn_del_file = Button(file_frame, padx=5, pady=5, width=12, text="파일삭제", command=del_file,font=font1)
+    btn_del_file['bg'] = '#489cf9'
+    btn_del_file['fg'] = 'white'
     btn_del_file.pack(side="left", padx=5)
 
-    btn_delall_file = Button(file_frame, padx=5, pady=5, width=12, text="전체삭제", command=del_all_file)
+    btn_delall_file = Button(file_frame, padx=5, pady=5, width=12, text="전체삭제", command=del_all_file,font=font1)
+    btn_delall_file['bg'] = '#489cf9'
+    btn_delall_file['fg'] = 'white'
     btn_delall_file.pack(side="left", padx=5)
 
-    btn_show_file = Button(file_frame, padx=5, pady=5, width=12, text="영상확인", command=show_file)
+    btn_show_file = Button(file_frame, padx=5, pady=5, width=12, text="영상확인", command=show_file,font=font1)
+    btn_show_file['bg'] = '#489cf9'
+    btn_show_file['fg'] = 'white'
     btn_show_file.pack(side="right", padx=5)
 
     # 리스트 프레임
@@ -482,16 +497,24 @@ if __name__ == '__main__':
     frame_run = LabelFrame(root, text="기능")
     frame_run.pack(fill="x", padx=5, pady=5)
 
-    btn_close = Button(frame_run, padx=5, pady=5, text="프로그램종료", width=12, command=root.quit)
+    btn_close = Button(frame_run, padx=5, pady=5, text="프로그램종료", width=12, command=root.quit,font=font1)
+    btn_close['bg'] = '#ff0080'
+    btn_close['fg'] = 'white'
     btn_close.pack(side="right", padx=5, pady=5)
 
-    btn_LLE = Button(frame_run, padx=5, pady=5, text="저조도개선", width=12, command=start_LLE)
+    btn_LLE = Button(frame_run, padx=5, pady=5, text="저조도개선", width=12, command=start_LLE,font=font1)
+    btn_LLE['bg'] = '#489cf9'
+    btn_LLE['fg'] = 'white'
     btn_LLE.pack(side="left", padx=5, pady=5)
 
-    btn_OD = Button(frame_run, padx=5, pady=5, text="객체탐지", width=12, command=start_obj_detect)
+    btn_OD = Button(frame_run, padx=5, pady=5, text="객체탐지", width=12, command=start_obj_detect,font=font1)
+    btn_OD['bg'] = '#489cf9'
+    btn_OD['fg'] = 'white'
     btn_OD.pack(side="left", padx=5, pady=5)
 
-    btn_log = Button(frame_run, padx=5, pady=5, text="로그기록", width=12, command=start_logging)
+    btn_log = Button(frame_run, padx=5, pady=5, text="로그기록", width=12, command=start_logging,font=font1)
+    btn_log['bg'] = '#489cf9'
+    btn_log['fg'] = 'white'
     btn_log.pack(side="left", padx=5, pady=5)
 
 
