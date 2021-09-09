@@ -28,7 +28,7 @@ def add_file():  # 복수개의 파일 선택
     global image_list
     files = filedialog.askopenfilenames(title="개선시킬 저조도 이미지 파일을 선택하세요", \
                                         filetypes=(("미디어 파일", "*.png;*.jpg;*.mp4"), ("모든 파일", "*.*")), \
-                                        initialdir="C:/Users/LAND/Desktop")
+                                        initialdir="C:/")
 
     # 사용자가 선택한 파일 목록
     for file in files:
