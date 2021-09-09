@@ -41,4 +41,4 @@ epoch 50
 - 로그 기록 : 객체 탐지된 영상에 대해서 탐지된 객체의 로그 기록 저장
 
 ### 6. 시연 영상
-<iframe width="560" height="315" src="https://www.youtube.com/embed/2MXqBcwoJrg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+!<iframe width="560" height="315" src="https://www.youtube.com/embed/2MXqBcwoJrg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
